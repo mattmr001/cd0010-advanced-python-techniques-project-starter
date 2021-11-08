@@ -42,11 +42,6 @@ class NearEarthObject:
         :param diameter: int supplied to the constructor
         param hazardous: bool supplied to the constructor
         """
-        # TODO: Assign information from the arguments passed to the constructor
-        # onto attributes named `designation`, `name`, `diameter`, and `hazardous`.
-        # You should coerce these values to their appropriate data type and
-        # handle any edge cases, such as a empty name being represented by `None`
-        # and a missing diameter being represented by `float('nan')`.
         self.designation = designation
         self.name = name
         self.diameter = float(diameter)
@@ -59,13 +54,17 @@ class NearEarthObject:
     def fullname(self):
         """Return a representation of the full name of this NEO."""
         # TODO: Use self.designation and self.name to build a fullname for this object.
-        return ''
+        if name != None:
+            return f"{self.designation} {self.name}"
+        else:
+            return f"{self.designation}"
 
     def __str__(self):
         """Return `str(self)`."""
         # TODO: Use this object's attributes to return a human-readable string representation.
         # The project instructions include one possibility. Peek at the __repr__
         # method for examples of advanced string formatting.
+
         return f"A NearEarthObject ..."
 
     def __repr__(self):
