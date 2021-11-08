@@ -53,7 +53,6 @@ class NearEarthObject:
     @property
     def fullname(self):
         """Return a representation of the full name of this NEO."""
-        # TODO: Use self.designation and self.name to build a fullname for this object.
         if name != None:
             return f"{self.designation} {self.name}"
         else:
@@ -65,7 +64,7 @@ class NearEarthObject:
         # The project instructions include one possibility. Peek at the __repr__
         # method for examples of advanced string formatting.
 
-        return f"A NearEarthObject ..."
+        return f"A NearEarthObject named {self.fullname}"
 
     def __repr__(self):
         """Return `repr(self)`, a computer-readable string representation of this object."""
