@@ -60,11 +60,8 @@ class NearEarthObject:
 
     def __str__(self):
         """Return `str(self)`."""
-        # TODO: Use this object's attributes to return a human-readable string representation.
-        # The project instructions include one possibility. Peek at the __repr__
-        # method for examples of advanced string formatting.
-
-        return f"A NearEarthObject named {self.fullname}"
+        return f"A NearEarthObject named {self.fullname} that has a diameter" \
+               f" of {self.diameter:.3f} and is {self.hazardous!r} hazardous"
 
     def __repr__(self):
         """Return `repr(self)`, a computer-readable string representation of this object."""
