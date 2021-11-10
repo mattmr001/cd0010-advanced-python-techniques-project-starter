@@ -44,11 +44,25 @@ class NearEarthObject:
         """
         self.designation = designation
         self.name = name
-        self.diameter = float(diameter)
         self.hazardous = hazardous
-
+        self.diameter = diameter
         # Create an empty initial collection of linked approaches.
         self.approaches = []
+
+    @property
+    def diameter(self):
+        print("Getting diameter value...")
+        return self._diameter
+
+    @diameter.setter
+    def diameter(self, val):
+        print("Setting diameter value...")
+        if val == '':
+            print(val)
+            self._diameter = 'nan'
+        else:
+            print(val)
+            self._diameter = float(val)
 
     @property
     def fullname(self):
@@ -64,9 +78,10 @@ class NearEarthObject:
                f" of {self.diameter:.3f} and is {self.hazardous!r} hazardous"
 
     def __repr__(self):
+        # TODO round diamter if passed to string ex: self.diameter:.3f but allow the string 'NAN'
         """Return `repr(self)`, a computer-readable string representation of this object."""
         return f"NearEarthObject(designation={self.designation!r}, name={self.name!r}, " \
-               f"diameter={self.diameter:.3f}, hazardous={self.hazardous!r})"
+               f"diameter={self.diameter}, hazardous={self.hazardous!r})"
 
 
 class CloseApproach():
