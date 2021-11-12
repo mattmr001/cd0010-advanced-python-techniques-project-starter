@@ -32,6 +32,7 @@ class TestDatabase(unittest.TestCase):
         cls.approaches = load_approaches(TEST_CAD_FILE)
         cls.db = NEODatabase(cls.neos, cls.approaches)
 
+
     def test_database_construction_links_approaches_to_neos(self):
         for approach in self.approaches:
             self.assertIsNotNone(approach.neo)

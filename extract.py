@@ -17,6 +17,12 @@ import json
 
 from models import NearEarthObject, CloseApproach
 
+import pathlib
+
+here = pathlib.Path('.')
+here = here.resolve()
+TEST_CAD_FILE = here / 'tests' / 'test-cad-2020.json'
+TEST_NEO_FILE = here / 'tests' / 'test-neos-2020.csv'
 
 def load_neos(neo_csv_path):
     """Read near-Earth object information from a CSV file.
@@ -32,10 +38,10 @@ def load_neos(neo_csv_path):
         reader = csv.DictReader(infile)
         for elem in reader:
             # print(elem)
-            neo = NearEarthObject(elem['pdes'], elem['name'], elem['diameter'])
-            print(neo.__repr__())
+            neo = NearEarthObject(elem['pdes'], elem['name'], elem['diameter'], elem['pha'])
+            # print(neo.__repr__())
             neos.append(neo)
-    print(neos)
+    # print(neos)
     return neos
 
 
@@ -46,4 +52,22 @@ def load_approaches(cad_json_path):
     :return: A collection of `CloseApproach`es.
     """
     # TODO: Load close approach data from the given JSON file.
-    return ()
+
+    approaches = []
+    with open(cad_json_path, 'r') as infile:
+        contents = json.load(infile)
+        for elem in contents['data']:
+            designation = elem[0]
+            time = elem[3]
+            distance = elem[4]
+            velocity = elem[7]
+
+            # print(designation, time, distance, velocity)
+            ca = CloseApproach(designation, time, distance, velocity)
+            approaches.append(ca)
+            # print(approaches)
+
+    return approaches
+
+# if __name__ == '__main__':
+    # load_approaches(TEST_CAD_FILE)

@@ -11,6 +11,13 @@ data on NEOs and close approaches extracted by `extract.load_neos` and
 
 You'll edit this file in Tasks 2 and 3.
 """
+import pathlib
+
+here = pathlib.Path('.')
+here = here.resolve()
+TEST_CAD_FILE = here / 'tests' / 'test-cad-2020.json'
+TEST_NEO_FILE = here / 'tests' / 'test-neos-2020.csv'
+from extract import load_neos, load_approaches
 
 
 class NEODatabase:
@@ -21,6 +28,7 @@ class NEODatabase:
     help fetch NEOs by primary designation or by name and to help speed up
     querying for close approaches that match criteria.
     """
+
     def __init__(self, neos, approaches):
         """Create a new `NEODatabase`.
 
@@ -46,6 +54,10 @@ class NEODatabase:
 
         # TODO: Link together the NEOs and their close approaches.
 
+    def test(self):
+        print("NEO : ", self._neos[0].__repr__)
+        print("APPROACH : ", self._approaches[0].__repr__)
+
     def get_neo_by_designation(self, designation):
         """Find and return an NEO by its primary designation.
 
@@ -60,7 +72,13 @@ class NEODatabase:
         :return: The `NearEarthObject` with the desired primary designation, or `None`.
         """
         # TODO: Fetch an NEO by its primary designation.
-        return None
+        for neo in self._neos:
+            if designation != neo.designation:
+                print("Neo designation not found in designation list")
+                continue
+            else:
+                print("Found neo designation : ", neo.designation)
+                return neo
 
     def get_neo_by_name(self, name):
         """Find and return an NEO by its name.
@@ -96,3 +114,12 @@ class NEODatabase:
         # TODO: Generate `CloseApproach` objects that match all of the filters.
         for approach in self._approaches:
             yield approach
+
+
+if __name__ == '__main__':
+    neos = load_neos(TEST_NEO_FILE)
+    approaches = load_approaches(TEST_CAD_FILE)
+    db = NEODatabase(neos, approaches)
+    print(db.test())
+    print(db.get_neo_by_designation("1685"))
+    # print(db.get_neo_by_designation())

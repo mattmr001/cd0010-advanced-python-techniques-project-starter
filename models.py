@@ -17,6 +17,8 @@ quirks of the data set, such as missing names and unknown diameters.
 
 You'll edit this file in Task 1.
 """
+import math
+
 from helpers import cd_to_datetime, datetime_to_str
 
 
@@ -50,19 +52,47 @@ class NearEarthObject:
         self.approaches = []
 
     @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        # print("Setting name value")
+        if value == '':
+            self._name = None
+        else:
+            self._name = value
+
+    @property
+    def hazardous(self):
+        # print("Getting hazardous value...")
+        return self._hazardous
+
+    @hazardous.setter
+    def hazardous(self, value):
+        # print("Setting hazardous value...")
+        # print("value:", value)
+        if value == 'Y':
+            # print(value)
+            self._hazardous = True
+        else:
+            # print("fail val", value)
+            self._hazardous = False
+
+    @property
     def diameter(self):
-        print("Getting diameter value...")
+        # print("Getting diameter value...")
         return self._diameter
 
     @diameter.setter
-    def diameter(self, val):
-        print("Setting diameter value...")
-        if val == '':
-            print(val)
-            self._diameter = 'nan'
+    def diameter(self, value):
+        # print("Setting diameter value...")
+        if value == '':
+            # print(value)
+            self._diameter = math.nan
         else:
-            print(val)
-            self._diameter = float(val)
+            # print(value)
+            self._diameter = float(value)
 
     @property
     def fullname(self):
@@ -81,7 +111,7 @@ class NearEarthObject:
         # TODO round diamter if passed to string ex: self.diameter:.3f but allow the string 'NAN'
         """Return `repr(self)`, a computer-readable string representation of this object."""
         return f"NearEarthObject(designation={self.designation!r}, name={self.name!r}, " \
-               f"diameter={self.diameter}, hazardous={self.hazardous!r})"
+               f"diameter={self.diameter:.3f}, hazardous={self.hazardous!r})"
 
 
 class CloseApproach():
@@ -99,7 +129,7 @@ class CloseApproach():
     """
     # TODO: How can you, and should you, change the arguments to this constructor?
     # If you make changes, be sure to update the comments in this file.
-    def __init__(self, neo=None, **info):
+    def __init__(self, designation, time, distance, velocity, neo=None,):
         """Create a new `CloseApproach`.
 
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
@@ -108,13 +138,13 @@ class CloseApproach():
         # onto attributes named `_designation`, `time`, `distance`, and `velocity`.
         # You should coerce these values to their appropriate data type and handle any edge cases.
         # The `cd_to_datetime` function will be useful.
-        self._designation = ''
-        self.time = cd_to_datetime(info["time"])  # TODO: Use the cd_to_datetime function for this attribute.
-        self.distance = 0.0
-        self.velocity = 0.0
+        self._designation = designation
+        self.time = cd_to_datetime(time)  # TODO: Use the cd_to_datetime function for this attribute.
+        self.distance = float(distance)
+        self.velocity = float(velocity)
 
         # Create an attribute for the referenced NEO, originally None.
-        self.neo = neo
+        self.neo = None
 
     @property
     def time_str(self):
@@ -131,9 +161,12 @@ class CloseApproach():
         """
         # TODO: Use this object's `.time` attribute and the `datetime_to_str` function to
         # build a formatted representation of the approach time.
-        formatted_time = datetime_to_str(self.neo.time)
+        formatted_time = datetime_to_str(self.time)
         # TODO: Use self.designation and self.name to build a fullname for this object.
-        fullname = f"{self.neo.designation} {self.neo.name}"
+        if self.neo is not None:
+            fullname = f"{self._designation} {self.neo.name}"
+        else:
+            fullname = self._designation
         return f"{fullname} approach time {formatted_time}"
 
     def __str__(self):
