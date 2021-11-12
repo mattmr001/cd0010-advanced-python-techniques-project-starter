@@ -73,10 +73,10 @@ class NEODatabase:
         """
         for neo in self._neos:
             if designation != neo.designation:
-                print("Neo designation not found in neo list")
-                return None
+                continue
             else:
-                print("Found neo designation : ", neo.designation)
+                print("Designation input : ", designation)
+                print("Neo Designation : ", neo.designation)
                 return neo
 
     def get_neo_by_name(self, name):
@@ -96,8 +96,7 @@ class NEODatabase:
         # TODO: Fetch an NEO by its name.
         for neo in self._neos:
             if name != neo.name:
-                print("Neo name not found in neo list")
-                return None
+                continue
             else:
                 print("Found neo name : ", neo.name)
                 return neo
@@ -118,7 +117,10 @@ class NEODatabase:
         """
         # TODO: Generate `CloseApproach` objects that match all of the filters.
         for approach in self._approaches:
-            yield approach
+            yield approach[3].__str__
+
+        # for approach in self._approaches:
+        #     yield approach
 
 
 if __name__ == '__main__':
@@ -126,5 +128,6 @@ if __name__ == '__main__':
     approaches = load_approaches(TEST_CAD_FILE)
     db = NEODatabase(neos, approaches)
     print(db.test())
-    print(db.get_neo_by_designation("1685"))
-    print(db.get_neo_by_name('Toro'))
+    print(db.get_neo_by_designation("1865"))
+    # print(db.get_neo_by_name('Toro'))
+    # print(db.query())
