@@ -114,7 +114,7 @@ class NearEarthObject:
                f"diameter={self.diameter:.3f}, hazardous={self.hazardous!r})"
 
 
-class CloseApproach():
+class CloseApproach:
     """A close approach to Earth by an NEO.
 
     A `CloseApproach` encapsulates information about the NEO's close approach to
@@ -162,12 +162,21 @@ class CloseApproach():
         # TODO: Use this object's `.time` attribute and the `datetime_to_str` function to
         # build a formatted representation of the approach time.
         formatted_time = datetime_to_str(self.time)
+        return formatted_time
+
+    # @property
+    # def date(self):
+    #     formatted_date = self.time_str.split(' ')[0]
+    #     return str(formatted_date)
+
+    @property
+    def fullname(self):
         # TODO: Use self.designation and self.name to build a fullname for this object.
         if self.neo is not None:
             fullname = f"{self._designation} {self.neo.name}"
         else:
             fullname = self._designation
-        return f"{fullname} approach time {formatted_time}"
+        return f"{fullname} approach time {self.time_str}"
 
     def __str__(self):
         """Return `str(self)`."""

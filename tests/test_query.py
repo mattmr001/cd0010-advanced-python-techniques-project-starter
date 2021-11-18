@@ -15,6 +15,7 @@ These tests should pass when Tasks 3a and 3b are complete.
 import datetime
 import pathlib
 import unittest
+from pprint import pprint
 
 from database import NEODatabase
 from extract import load_neos, load_approaches
@@ -25,6 +26,18 @@ TESTS_ROOT = (pathlib.Path(__file__).parent).resolve()
 TEST_NEO_FILE = TESTS_ROOT / 'test-neos-2020.csv'
 TEST_CAD_FILE = TESTS_ROOT / 'test-cad-2020.json'
 
+
+def debug_sets(received, expected):
+    list_received = list(received)
+    list_expected = list(expected)
+
+    for x in range(len(list_received)):
+        if x <= 4:
+            print(f"{x} received item: ", list_received[x])
+    print("###################################################")
+    for x in range(len(list_expected)):
+        if x <= 4:
+            print(f"{x} received item: ", list_expected[x])
 
 class TestQuery(unittest.TestCase):
     # Set longMessage to True to enable lengthy diffs between set comparisons.
@@ -59,6 +72,8 @@ class TestQuery(unittest.TestCase):
 
         filters = create_filters(date=date)
         received = set(self.db.query(filters))
+
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_approaches_after_april(self):
@@ -72,6 +87,8 @@ class TestQuery(unittest.TestCase):
 
         filters = create_filters(start_date=start_date)
         received = set(self.db.query(filters))
+
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_approaches_before_july(self):
@@ -85,6 +102,7 @@ class TestQuery(unittest.TestCase):
 
         filters = create_filters(end_date=end_date)
         received = set(self.db.query(filters))
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_approaches_in_march(self):
@@ -99,6 +117,7 @@ class TestQuery(unittest.TestCase):
 
         filters = create_filters(start_date=start_date, end_date=end_date)
         received = set(self.db.query(filters))
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_with_conflicting_date_bounds(self):
@@ -109,6 +128,7 @@ class TestQuery(unittest.TestCase):
 
         filters = create_filters(start_date=start_date, end_date=end_date)
         received = set(self.db.query(filters))
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_with_bounds_and_a_specific_date(self):
@@ -124,6 +144,7 @@ class TestQuery(unittest.TestCase):
 
         filters = create_filters(date=date, start_date=start_date, end_date=end_date)
         received = set(self.db.query(filters))
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_with_max_distance(self):
@@ -137,7 +158,7 @@ class TestQuery(unittest.TestCase):
 
         filters = create_filters(distance_max=distance_max)
         received = set(self.db.query(filters))
-
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_with_min_distance(self):
@@ -151,7 +172,7 @@ class TestQuery(unittest.TestCase):
 
         filters = create_filters(distance_min=distance_min)
         received = set(self.db.query(filters))
-
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_with_max_distance_and_min_distance(self):
@@ -166,7 +187,7 @@ class TestQuery(unittest.TestCase):
 
         filters = create_filters(distance_min=distance_min, distance_max=distance_max)
         received = set(self.db.query(filters))
-
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_with_max_distance_and_min_distance_conflicting(self):
@@ -177,7 +198,7 @@ class TestQuery(unittest.TestCase):
 
         filters = create_filters(distance_min=distance_min, distance_max=distance_max)
         received = set(self.db.query(filters))
-
+        # print(debug_sets(received, expected))
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_with_max_velocity(self):
@@ -191,7 +212,7 @@ class TestQuery(unittest.TestCase):
 
         filters = create_filters(velocity_max=velocity_max)
         received = set(self.db.query(filters))
-
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_with_min_velocity(self):
@@ -205,7 +226,7 @@ class TestQuery(unittest.TestCase):
 
         filters = create_filters(velocity_min=velocity_min)
         received = set(self.db.query(filters))
-
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_with_max_velocity_and_min_velocity(self):
@@ -220,7 +241,7 @@ class TestQuery(unittest.TestCase):
 
         filters = create_filters(velocity_min=velocity_min, velocity_max=velocity_max)
         received = set(self.db.query(filters))
-
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_with_max_velocity_and_min_velocity_conflicting(self):
@@ -231,7 +252,7 @@ class TestQuery(unittest.TestCase):
 
         filters = create_filters(velocity_min=velocity_min, velocity_max=velocity_max)
         received = set(self.db.query(filters))
-
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_with_max_diameter(self):
@@ -245,7 +266,7 @@ class TestQuery(unittest.TestCase):
 
         filters = create_filters(diameter_max=diameter_max)
         received = set(self.db.query(filters))
-
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_with_min_diameter(self):
@@ -259,7 +280,7 @@ class TestQuery(unittest.TestCase):
 
         filters = create_filters(diameter_min=diameter_min)
         received = set(self.db.query(filters))
-
+        debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_with_max_diameter_and_min_diameter(self):
@@ -274,7 +295,7 @@ class TestQuery(unittest.TestCase):
 
         filters = create_filters(diameter_min=diameter_min, diameter_max=diameter_max)
         received = set(self.db.query(filters))
-
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_with_max_diameter_and_min_diameter_conflicting(self):
@@ -285,7 +306,7 @@ class TestQuery(unittest.TestCase):
 
         filters = create_filters(diameter_min=diameter_min, diameter_max=diameter_max)
         received = set(self.db.query(filters))
-
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_with_hazardous(self):
@@ -297,6 +318,19 @@ class TestQuery(unittest.TestCase):
 
         filters = create_filters(hazardous=True)
         received = set(self.db.query(filters))
+
+        list_received = list(received)
+        list_expected = list(expected)
+
+        for x in range(len(list_received)):
+            if x <= 4:
+                approach_obj = list_received[x]
+                print(f"{x} received item: ", approach_obj.neo)
+        print("###################################################")
+        for x in range(len(list_expected)):
+            if x <= 4:
+                approach_obj = list_expected[x]
+                print(f"{x} received item: ", approach_obj.neo)
 
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
@@ -310,6 +344,20 @@ class TestQuery(unittest.TestCase):
         filters = create_filters(hazardous=False)
         received = set(self.db.query(filters))
 
+        list_received = list(received)
+        list_expected = list(expected)
+
+        for x in range(len(list_received)):
+            if x <= 10:
+                approach_obj = list_received[x]
+                print(f"{x} received item: ", approach_obj.neo)
+        print("###################################################")
+        for x in range(len(list_expected)):
+            if x <= 10:
+                approach_obj = list_expected[x]
+                print(f"{x} expected item: ", approach_obj.neo)
+
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     ###########################
@@ -329,6 +377,7 @@ class TestQuery(unittest.TestCase):
 
         filters = create_filters(date=date, distance_max=distance_max)
         received = set(self.db.query(filters))
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_approaches_on_march_2_with_min_distance(self):
@@ -344,6 +393,7 @@ class TestQuery(unittest.TestCase):
 
         filters = create_filters(date=date, distance_min=distance_min)
         received = set(self.db.query(filters))
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_approaches_in_march_with_min_distance_and_max_distance(self):
@@ -364,6 +414,7 @@ class TestQuery(unittest.TestCase):
             distance_min=distance_min, distance_max=distance_max,
         )
         received = set(self.db.query(filters))
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_approaches_in_march_with_distance_bounds_and_max_velocity(self):
@@ -387,6 +438,7 @@ class TestQuery(unittest.TestCase):
             velocity_max=velocity_max
         )
         received = set(self.db.query(filters))
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_approaches_in_march_with_distance_and_velocity_bounds(self):
@@ -411,6 +463,7 @@ class TestQuery(unittest.TestCase):
             velocity_min=velocity_min, velocity_max=velocity_max
         )
         received = set(self.db.query(filters))
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_approaches_in_spring_with_distance_and_velocity_bounds_and_max_diameter(self):
@@ -438,6 +491,7 @@ class TestQuery(unittest.TestCase):
             diameter_max=diameter_max
         )
         received = set(self.db.query(filters))
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_approaches_in_spring_with_distance_velocity_and_diameter_bounds(self):
@@ -466,6 +520,7 @@ class TestQuery(unittest.TestCase):
             diameter_min=diameter_min, diameter_max=diameter_max
         )
         received = set(self.db.query(filters))
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_approaches_in_spring_with_all_bounds_and_potentially_hazardous_neos(self):
@@ -496,6 +551,7 @@ class TestQuery(unittest.TestCase):
             hazardous=True
         )
         received = set(self.db.query(filters))
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     def test_query_approaches_in_spring_with_all_bounds_and_not_potentially_hazardous_neos(self):
@@ -526,6 +582,7 @@ class TestQuery(unittest.TestCase):
             hazardous=False
         )
         received = set(self.db.query(filters))
+        # debug_sets(received, expected)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
 

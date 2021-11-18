@@ -72,6 +72,118 @@ class AttributeFilter:
         return f"{self.__class__.__name__}(op=operator.{self.op.__name__}, value={self.value})"
 
 
+# TODO: Decide how you will represent your filters.
+
+class DateFilter(AttributeFilter):
+    def __init__(self, date):
+        super().__init__(operator.eq, date)
+
+    @classmethod
+    def get(cls, approach):
+        return approach.time.date()
+
+
+class StartDateFilter(AttributeFilter):
+    def __init__(self, date):
+        super().__init__(operator.ge, date)
+
+    @classmethod
+    def get(cls, approach):
+        return approach.time.date()
+
+
+class EndDateFilter(AttributeFilter):
+    def __init__(self, date):
+        super().__init__(operator.le, date)
+
+    @classmethod
+    def get(cls, approach):
+        return approach.time.date()
+
+
+class MinimumDistanceFilter(AttributeFilter):
+    """In astronomical units. Only return close approaches that pass as far or
+    farther away from Earth as the given distance."""
+    def __init__(self, the_input):
+        """Check if approach's distance >= input."""
+        super().__init__(operator.ge, the_input)
+
+    @classmethod
+    def get(cls, approach):
+        return approach.distance
+
+
+class MaximumDistanceFilter(AttributeFilter):
+    """In astronomical units. Only return close approaches that pass as near or
+    nearer to Earth as the given distance."""
+    def __init__(self, the_input):
+        """Check if approach's distance <= input."""
+        super().__init__(operator.le, the_input)
+
+    @classmethod
+    def get(cls, approach):
+        return approach.distance
+
+
+class MaximumVelocityFilter(AttributeFilter):
+    """ In kilometers per second. Only return close approaches whose relative
+    velocity to Earth at approach is as slow or slower than the given
+    velocity."""
+    def __init__(self, the_input):
+        """Check if approach's velocity <= input."""
+        super().__init__(operator.le, the_input)
+
+    @classmethod
+    def get(cls, approach):
+        return approach.velocity
+
+
+class MinimumVelocityFilter(AttributeFilter):
+    """In kilometers per second. Only return close approaches whose relative
+    velocity to Earth at approach is as fast or faster than the given
+    velocity"""
+    def __init__(self, the_input):
+        """Check if approach's velocity >= input."""
+        super().__init__(operator.ge, the_input)
+
+    @classmethod
+    def get(cls, approach):
+        return approach.velocity
+
+
+class MaximumDiameterFilter(AttributeFilter):
+    """In kilometers. Only return close approaches of NEOs with diameters
+    as large or smaller than the given size."""
+    def __init__(self, the_input):
+        """Check if the approach's diameter <= the_input"""
+        super().__init__(operator.le, the_input)
+
+    @classmethod
+    def get(cls, approach):
+        return approach.neo.diameter
+
+
+class MinimumDiameterFilter(AttributeFilter):
+    """In kilometers. Only return close approaches of NEOs with diameters
+    as large or larger than the given size."""
+    def __init__(self, the_input):
+        """Check if the approach's diameter >= the_input"""
+        super().__init__(operator.ge, the_input)
+
+    @classmethod
+    def get(cls, approach):
+        return approach.neo.diameter
+
+
+class HazardousFilter(AttributeFilter):
+    def __init__(self, the_input):
+        super().__init__(operator.eq, the_input)
+
+    @classmethod
+    def get(cls, approach):
+        return approach.neo.hazardous
+
+
 def create_filters(
         date=None, start_date=None, end_date=None,
         distance_min=None, distance_max=None,
@@ -108,8 +220,28 @@ def create_filters(
     :param hazardous: Whether the NEO of a matching `CloseApproach` is potentially hazardous.
     :return: A collection of filters for use with `query`.
     """
-    # TODO: Decide how you will represent your filters.
-    return ()
+    filters = []
+    if date:
+        filters.append(DateFilter(date))
+    if start_date:
+        filters.append(StartDateFilter(start_date))
+    if end_date:
+        filters.append(EndDateFilter(end_date))
+    if distance_max:
+        filters.append(MaximumDistanceFilter(distance_max))
+    if distance_min:
+        filters.append(MinimumDistanceFilter(distance_min))
+    if velocity_max:
+        filters.append(MaximumVelocityFilter(velocity_max))
+    if velocity_min:
+        filters.append(MinimumVelocityFilter(velocity_min))
+    if diameter_max:
+        filters.append(MaximumDiameterFilter(diameter_max))
+    if diameter_min:
+        filters.append(MinimumDiameterFilter(diameter_min))
+    if hazardous:
+        filters.append(HazardousFilter(hazardous))
+    return filters
 
 
 def limit(iterator, n=None):
