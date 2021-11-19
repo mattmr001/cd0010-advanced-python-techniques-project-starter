@@ -31,7 +31,7 @@ def write_to_csv(results, filename):
     # TODO: Write the results to a CSV file, following the specification in the instructions.
 
     with open(filename, 'w') as outfile:
-        print(results)
+        # print(results)
         writer = csv.writer(outfile)
         writer.writerow(fieldnames)
         for approach in results:
@@ -48,6 +48,25 @@ def write_to_csv(results, filename):
             writer.writerow(new_row)
 
 
+def convert_results_to_dictionary(results):
+    data = []
+    for approach in results:
+        new_approach = {'datetime_utc': datetime_to_str(approach.time),
+                        'distance_au': approach.distance,
+                        'velocity_km_s': approach.velocity,
+                        'neo': {
+                            'designation': approach.neo.designation,
+                            'name': approach.neo.name if approach.neo.name else '',
+                            'diameter_km': approach.neo.diameter,
+                            'potentially_hazardous': approach.neo.hazardous,
+                            }
+                        }
+        data.append(new_approach)
+
+    print(data)
+    return data
+
+
 def write_to_json(results, filename):
     """Write an iterable of `CloseApproach` objects to a JSON file.
 
@@ -59,4 +78,8 @@ def write_to_json(results, filename):
     :param results: An iterable of `CloseApproach` objects.
     :param filename: A Path-like object pointing to where the data should be saved.
     """
+    data = convert_results_to_dictionary(results)
+    print(data)
     # TODO: Write the results to a JSON file, following the specification in the instructions.
+    with open(filename, "w") as outfile:
+        json.dump(data, outfile, indent=2)
