@@ -319,18 +319,18 @@ class TestQuery(unittest.TestCase):
         filters = create_filters(hazardous=True)
         received = set(self.db.query(filters))
 
-        list_received = list(received)
-        list_expected = list(expected)
-
-        for x in range(len(list_received)):
-            if x <= 4:
-                approach_obj = list_received[x]
-                print(f"{x} received item: ", approach_obj.neo)
-        print("###################################################")
-        for x in range(len(list_expected)):
-            if x <= 4:
-                approach_obj = list_expected[x]
-                print(f"{x} received item: ", approach_obj.neo)
+        # # DEBUG NEOS
+        # list_received = list(received)
+        # list_expected = list(expected)
+        # for x in range(len(list_received)):
+        #     if x <= 4:
+        #         approach_obj = list_received[x]
+        #         print(f"{x} received item: ", approach_obj.neo)
+        # print("###################################################")
+        # for x in range(len(list_expected)):
+        #     if x <= 4:
+        #         approach_obj = list_expected[x]
+        #         print(f"{x} received item: ", approach_obj.neo)
 
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
@@ -346,18 +346,23 @@ class TestQuery(unittest.TestCase):
 
         list_received = list(received)
         list_expected = list(expected)
-
-        for x in range(len(list_received)):
-            if x <= 10:
-                approach_obj = list_received[x]
-                print(f"{x} received item: ", approach_obj.neo)
-        print("###################################################")
-        for x in range(len(list_expected)):
-            if x <= 10:
-                approach_obj = list_expected[x]
-                print(f"{x} expected item: ", approach_obj.neo)
-
-        # debug_sets(received, expected)
+        """TODO : When haazardous is set to False it doesnt return a list not
+        hazardous neos. 
+        
+        Hazardous=True seems to work.
+        """
+        # # DEBUG NEOS
+        # list_received = list(received)
+        # list_expected = list(expected)
+        # for x in range(len(list_received)):
+        #     if x <= 4:
+        #         approach_obj = list_received[x]
+        #         print(f"{x} received item: ", approach_obj.neo)
+        # print("###################################################")
+        # for x in range(len(list_expected)):
+        #     if x <= 4:
+        #         approach_obj = list_expected[x]
+        #         print(f"{x} received item: ", approach_obj.neo)
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     ###########################

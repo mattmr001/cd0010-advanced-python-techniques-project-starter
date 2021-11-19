@@ -76,7 +76,6 @@ class NearEarthObject:
             # print(value)
             self._hazardous = True
         else:
-            # print("fail val", value)
             self._hazardous = False
 
     @property

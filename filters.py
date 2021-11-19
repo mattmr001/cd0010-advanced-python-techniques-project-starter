@@ -17,6 +17,7 @@ iterator.
 You'll edit this file in Tasks 3a and 3c.
 """
 import operator
+from itertools import islice
 
 
 class UnsupportedCriterionError(NotImplementedError):
@@ -71,8 +72,6 @@ class AttributeFilter:
     def __repr__(self):
         return f"{self.__class__.__name__}(op=operator.{self.op.__name__}, value={self.value})"
 
-
-# TODO: Decide how you will represent your filters.
 
 class DateFilter(AttributeFilter):
     def __init__(self, date):
@@ -239,7 +238,7 @@ def create_filters(
         filters.append(MaximumDiameterFilter(diameter_max))
     if diameter_min:
         filters.append(MinimumDiameterFilter(diameter_min))
-    if hazardous:
+    if hazardous is not None:
         filters.append(HazardousFilter(hazardous))
     return filters
 
@@ -253,5 +252,8 @@ def limit(iterator, n=None):
     :param n: The maximum number of values to produce.
     :yield: The first (at most) `n` values from the iterator.
     """
-    # TODO: Produce at most `n` values from the given iterator.
-    return iterator
+    if n is not 0 or None:
+        return islice(iterator, n)
+    else:
+        return iterator
+
