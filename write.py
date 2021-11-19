@@ -12,7 +12,7 @@ You'll edit this file in Part 4.
 """
 import csv
 import json
-
+from helpers import datetime_to_str
 
 def write_to_csv(results, filename):
     """Write an iterable of `CloseApproach` objects to a CSV file.
@@ -29,6 +29,23 @@ def write_to_csv(results, filename):
         'designation', 'name', 'diameter_km', 'potentially_hazardous'
     )
     # TODO: Write the results to a CSV file, following the specification in the instructions.
+
+    with open(filename, 'w') as outfile:
+        print(results)
+        writer = csv.writer(outfile)
+        writer.writerow(fieldnames)
+        for approach in results:
+            # print(approach.time)
+            new_row = [datetime_to_str(approach.time),
+                       approach.distance,
+                       approach.velocity,
+                       approach.neo.designation,
+                       approach.neo.name if approach.neo.name else '',
+                       approach.neo.diameter,
+                       approach.neo.hazardous,
+                       ]
+            print(new_row)
+            writer.writerow(new_row)
 
 
 def write_to_json(results, filename):
