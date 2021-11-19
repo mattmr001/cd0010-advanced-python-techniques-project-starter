@@ -130,6 +130,7 @@ class NEODatabase:
             if all(f(approach) for f in filters):
                 yield approach
 
+
 if __name__ == '__main__':
     neos = load_neos(TEST_NEO_FILE)
     approaches = load_approaches(TEST_CAD_FILE)
