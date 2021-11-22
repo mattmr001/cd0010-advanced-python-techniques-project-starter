@@ -35,10 +35,12 @@ class NearEarthObject:
     initialized to an empty collection, but eventually populated in the
     `NEODatabase` constructor.
     """
+
     def __init__(self, designation, name=None, diameter='nan',
                  hazardous=False):
         """
-        Create a new `NearEarthObject`
+        Create a new `NearEarthObject`.
+
         :param designation: str supplied to the constructor
         :param name: str supplied to the constructor
         :param diameter: int supplied to the constructor
@@ -53,13 +55,14 @@ class NearEarthObject:
 
     @property
     def name(self):
-        """ Get name value."""
+        """Get name value."""
         return self._name
 
     @name.setter
     def name(self, value):
-        """ Set name.
-            :param value: self.name value
+        """Set name.
+
+        :param value: self.name value
         """
         if value == '':
             self._name = None
@@ -68,13 +71,14 @@ class NearEarthObject:
 
     @property
     def hazardous(self):
-        """ Get hazardous value."""
+        """Get hazardous value."""
         return self._hazardous
 
     @hazardous.setter
     def hazardous(self, value):
-        """ Set hazardous.
-            :param value: self.hazardous value
+        """Set hazardous.
+
+        :param value: self.hazardous value
         """
         if value == 'Y':
             # print(value)
@@ -84,20 +88,18 @@ class NearEarthObject:
 
     @property
     def diameter(self):
-        """ Get diameter value."""
+        """Get diameter value."""
         return self._diameter
 
     @diameter.setter
     def diameter(self, value):
-        """ Set diameter.
-            :param value: self.diameter value
+        """Set diameter.
+
+        :param value: self.diameter value
         """
-        # print("Setting diameter value...")
         if value == '':
-            # print(value)
             self._diameter = math.nan
         else:
-            # print(value)
             self._diameter = float(value)
 
     @property
@@ -114,8 +116,10 @@ class NearEarthObject:
                f" of {self.diameter:.3f} and is {self.hazardous!r} hazardous"
 
     def __repr__(self):
-        """Return `repr(self)`, a computer-readable string representation
-        of this object."""
+        """Return `repr(self)`.
+
+        a computer-readable string representation of this object.
+        """
         return f"NearEarthObject(designation={self.designation!r}, " \
                f"name={self.name!r}, " \
                f"diameter={self.diameter:.3f}, hazardous={self.hazardous!r})"
@@ -135,6 +139,7 @@ class CloseApproach:
     private attribute, but the referenced NEO is eventually replaced in the
     `NEODatabase` constructor.
     """
+
     def __init__(self, designation, time, distance, velocity, neo=None,):
         """Create a new `CloseApproach`.
 
@@ -155,8 +160,7 @@ class CloseApproach:
 
     @property
     def time_str(self):
-        """Return a formatted representation of this `CloseApproach`'s
-         approach time.
+        """Return a formatted representation of this `CloseApproach`'s time.
 
         The value in `self.time` should be a Python `datetime` object.
         While a `datetime` object has a string representation, the default
@@ -188,8 +192,7 @@ class CloseApproach:
                f" {self.neo.name!r})"
 
     def __repr__(self):
-        """Return `repr(self)`, a computer-readable string representation of
-        this object."""
+        """Return `repr(self)`, a computer-readable string repr of object."""
         return f"CloseApproach(time={self.time_str!r}, " \
                f"distance={self.distance:.2f}, " \
                f"velocity={self.velocity:.2f}, neo={self.neo!r})"

@@ -47,6 +47,10 @@ def write_to_csv(results, filename):
 
 
 def convert_results_to_dictionary(results):
+    """Convert results to a dictionary.
+
+    :param results: A set of close approaches.
+    """
     data = []
     for approach in results:
         new_approach = {'datetime_utc': datetime_to_str(approach.time),

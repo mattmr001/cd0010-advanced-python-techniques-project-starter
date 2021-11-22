@@ -1,4 +1,7 @@
-"""A database encapsulating collections of near-Earth objects and their close
+"""
+Encapsulate collections of Neos and their close approaches in a database.
+
+A database encapsulating collections of near-Earth objects and their close
 approaches.
 
 A `NEODatabase` holds an interconnected data set of NEOs and close approaches.
@@ -31,7 +34,8 @@ class NEODatabase:
     """
 
     def __init__(self, neos, approaches):
-        """Create a new `NEODatabase`.
+        """
+        Create a new `NEODatabase`.
 
         As a precondition, this constructor assumes that the collections of
         NEOs
@@ -60,25 +64,24 @@ class NEODatabase:
                                        self._neo_by_name)
 
     def link_neos_with_approaches(self, neo_by_designation, neo_by_name):
-        """ Link together the NEOs and their close approaches.
-            :param neo_by_designation: dict of neo designations and associtated
-             neo.
-            :param neo_by_names: dict of neo names and associated neos.
+        """
+        Link together the NEOs and their close approaches.
+
+        :param neo_by_designation: dict of neo designations and associtated
+         neo.
+        :param neo_by_names: dict of neo names and associated neos.
         """
         for approach in self._approaches:
             neo = self._neo_by_designation[approach._designation]
             approach.neo = neo
             neo.approaches.append(approach)
 
-    def test(self):
-        print("NEO : ", self._neos[0].__repr__)
-        print("APPROACH : ", self._approaches[0].__repr__)
 
     def get_neo_by_designation(self, designation):
-        """Find and return an NEO by its primary designation.
+        """
+        Find and return an NEO by its primary designation.
 
         If no match is found, return `None` instead.
-
         Each NEO in the data set has a unique primary designation, as a string.
 
         The matching is exact - check for spelling and capitalization if no
@@ -118,8 +121,8 @@ class NEODatabase:
                 return neo
 
     def query(self, filters=()):
-        """Query close approaches to generate those that match a collection of
-        filters.
+        """
+        Query approaches to generate those that match a collection of filters.
 
         This generates a stream of `CloseApproach` objects that match all of
         the provided filters.

@@ -1,5 +1,4 @@
-"""Provide filters for querying close approaches and limit the generated
-results.
+"""Provide filters for querying approaches and limit the generated results.
 
 The `create_filters` function produces a collection of objects that is used by
 the `query` method to generate a stream of `CloseApproach` objects that match
@@ -17,6 +16,7 @@ iterator.
 
 You'll edit this file in Tasks 3a and 3c.
 """
+
 import operator
 from itertools import islice
 
@@ -40,8 +40,10 @@ class AttributeFilter:
     Concrete subclasses can override the `get` classmethod to provide custom
     behavior to fetch a desired attribute from the given `CloseApproach`.
     """
+
     def __init__(self, op, value):
-        """Construct a new `AttributeFilter` from an binary predicate and a
+        """Construct a new `AttributeFilter` from an binary predicate and a...
+
         reference value.
 
         The reference value will be supplied as the second (right-hand side)
@@ -73,164 +75,276 @@ class AttributeFilter:
         raise UnsupportedCriterionError
 
     def __repr__(self):
+        """Represent the AttributeFilter in string format."""
         return f"{self.__class__.__name__}(op=operator.{self.op.__name__}, " \
                f"value={self.value})"
 
 
 class DateFilter(AttributeFilter):
     """
+    Return close approaches on the given date.
+
     Only return close approaches on the given date, in
     YYYY-MM-DD format (e.g. 2020-12-31).
+
     :param the_input: date
     """
+
     def __init__(self, the_input):
         """
         Check if approach's date == the_input.
+
         :param the_input: date
         """
         super().__init__(operator.eq, the_input)
 
     @classmethod
     def get(cls, approach):
+        """Get an attribute of interest from a close approach.
+
+        :param approach: A `CloseApproach` on which to evaluate this filter.
+        :return: The value of an attribute of interest, comparable to
+        `self.value` via `self.op`.
+        """
         return approach.time.date()
 
 
 class StartDateFilter(AttributeFilter):
     """
-    Only return close approaches on or after the given date,
-    in YYYY-MM-DD format (e.g. 2020-12-31).
+    Return approaches on or after the given date.
 
+    Only return close approaches on or after the given date
+    in YYYY-MM-DD format (e.g. 2020-12-31).
     """
+
     def __init__(self, date):
         """
         Check if approach's date >= the_input.
+
         :param the_input: date
         """
         super().__init__(operator.ge, date)
 
     @classmethod
     def get(cls, approach):
+        """Get an attribute of interest from a close approach.
+
+        :param approach: A `CloseApproach` on which to evaluate this filter.
+        :return: The value of an attribute of interest, comparable to
+        `self.value` via `self.op`.
+        """
         return approach.time.date()
 
 
 class EndDateFilter(AttributeFilter):
-    """ Only return close approaches on or before the given date,
+    """
+    Return close approaches on or before the given date.
+
+    Only return close approaches on or before the given date
     in YYYY-MM-DD format (e.g. 2020-12-31).
     """
+
     def __init__(self, the_input):
         """
         Check if approach's date <= the_input.
+
         :param the_input: date
         """
         super().__init__(operator.le, the_input)
 
     @classmethod
     def get(cls, approach):
+        """Get an attribute of interest from a close approach.
+
+        :param approach: A `CloseApproach` on which to evaluate this filter.
+        :return: The value of an attribute of interest, comparable to
+        `self.value` via `self.op`.
+        """
         return approach.time.date()
 
 
 class MinimumDistanceFilter(AttributeFilter):
-    """In astronomical units. Only return close approaches that pass as far or
-    farther away from Earth as the given distance."""
+    """Return close approaches that pass as far or farther.
+
+    In astronomical units. Only return close approaches that pass as far or
+    farther away from Earth as the given distance.
+    """
+
     def __init__(self, the_input):
         """
         Check if approach's distance >= the_input.
+
         :param the_input: int
         """
         super().__init__(operator.ge, the_input)
 
     @classmethod
     def get(cls, approach):
+        """Get an attribute of interest from a close approach.
+
+        :param approach: A `CloseApproach` on which to evaluate this filter.
+        :return: The value of an attribute of interest, comparable to
+        `self.value` via `self.op`.
+        """
         return approach.distance
 
 
 class MaximumDistanceFilter(AttributeFilter):
-    """In astronomical units. Only return close approaches that pass as near or
-    nearer to Earth as the given distance."""
+    """
+    Return close approaches that pass as near or nearer.
+
+    In astronomical units. Only return close approaches that pass as near or
+    nearer to Earth as the given distance.
+    """
+
     def __init__(self, the_input):
         """
         Check if approach's distance <= the_input.
+
         :param the_input: int
         """
         super().__init__(operator.le, the_input)
 
     @classmethod
     def get(cls, approach):
+        """Get an attribute of interest from a close approach.
+
+        :param approach: A `CloseApproach` on which to evaluate this filter.
+        :return: The value of an attribute of interest, comparable to
+        `self.value` via `self.op`.
+        """
         return approach.distance
 
 
 class MaximumVelocityFilter(AttributeFilter):
-    """ In kilometers per second. Only return close approaches whose relative
+    """
+    Return approaches whose relative velocity to earth is as slow or slower.
+
+    In kilometers per second. Only return close approaches whose relative
     velocity to Earth at approach is as slow or slower than the given
-    velocity."""
+    velocity.
+    """
+
     def __init__(self, the_input):
         """
         Check if approach's velocity <= the_input.
+
         :param the_input: int
         """
         super().__init__(operator.le, the_input)
 
     @classmethod
     def get(cls, approach):
+        """Get an attribute of interest from a close approach.
+
+        :param approach: A `CloseApproach` on which to evaluate this filter.
+        :return: The value of an attribute of interest, comparable to
+        `self.value` via `self.op`.
+        """
         return approach.velocity
 
 
 class MinimumVelocityFilter(AttributeFilter):
-    """In kilometers per second. Only return close approaches whose relative
+    """
+    Return approaches whose relative velocity to earth is as fast or faster.
+
+    In kilometers per second. Only return close approaches whose relative
     velocity to Earth at approach is as fast or faster than the given
-    velocity"""
+    velocity
+    """
+
     def __init__(self, the_input):
         """
         Check if approach's velocity >= the_input.
+
         :param the_input: int
         """
         super().__init__(operator.ge, the_input)
 
     @classmethod
     def get(cls, approach):
+        """Get an attribute of interest from a close approach.
+
+        :param approach: A `CloseApproach` on which to evaluate this filter.
+        :return: The value of an attribute of interest, comparable to
+        `self.value` via `self.op`.
+        """
         return approach.velocity
 
 
 class MaximumDiameterFilter(AttributeFilter):
-    """In kilometers. Only return close approaches of NEOs with diameters
-    as large or smaller than the given size."""
+    """
+    Return close approaches of NEOs with diameters as large or smaller.
+
+    In kilometers. Only return close approaches of NEOs with diameters
+    as large or smaller than the given size.
+    """
+
     def __init__(self, the_input):
         """
         Check if approach's velocity <= the_input.
+
         :param the_input: int
         """
         super().__init__(operator.le, the_input)
 
     @classmethod
     def get(cls, approach):
+        """Get an attribute of interest from a close approach.
+
+        :param approach: A `CloseApproach` on which to evaluate this filter.
+        :return: The value of an attribute of interest, comparable to
+        `self.value` via `self.op`.
+        """
         return approach.neo.diameter
 
 
 class MinimumDiameterFilter(AttributeFilter):
-    """In kilometers. Only return close approaches of NEOs with diameters
-    as large or larger than the given size."""
+    """
+    Return close approaches of NEOs with diameters as large or larger.
+
+    In kilometers. Only return close approaches of NEOs with diameters
+    as large or larger than the given size.
+    """
+
     def __init__(self, the_input):
         """
         Check if approach's velocity >= the_input.
+
         :param the_input: int
         """
         super().__init__(operator.ge, the_input)
 
     @classmethod
     def get(cls, approach):
+        """Get an attribute of interest from a close approach.
+
+        :param approach: A `CloseApproach` on which to evaluate this filter.
+        :return: The value of an attribute of interest, comparable to
+        `self.value` via `self.op`.
+        """
         return approach.neo.diameter
 
 
 class HazardousFilter(AttributeFilter):
+    """Return close approaches of NEOs who are or are not hazardous."""
+
     def __init__(self, the_input):
         """
         Check if approach's velocity == the_input.
+
         :param the_input: bool
         """
         super().__init__(operator.eq, the_input)
 
     @classmethod
     def get(cls, approach):
+        """Get an attribute of interest from a close approach.
+
+        :param approach: A `CloseApproach` on which to evaluate this filter.
+        :return: The value of an attribute of interest, comparable to
+        `self.value` via `self.op`.
+        """
         return approach.neo.hazardous
 
 
@@ -315,7 +429,7 @@ def limit(iterator, n=None):
     :param n: The maximum number of values to produce.
     :yield: The first (at most) `n` values from the iterator.
     """
-    if n is not 0 or None:
+    if n != 0 or None:
         return islice(iterator, n)
     else:
         return iterator
