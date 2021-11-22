@@ -1,4 +1,5 @@
-"""Check that an `NEODatabase` can be constructed and responds to inspect queries.
+"""Check that an `NEODatabase` can be constructed and responds to
+inspect queries.
 
 The `NEODatabase` constructor should cross-link NEOs and their close approaches,
 as well as prepare any additional metadata needed to support the `get_neo_by_*`
